@@ -1,0 +1,10 @@
+1、查看git状态
+git status
+
+2、将文件添加到暂存区
+git add --ignore-errors -- src/test/java/com/wy/TestGit.java
+
+3、将刚才添加的文件移除暂存区
+git rm --cached -f -- src/test/java/com/wy/TestGit.java
+
+
