@@ -7,4 +7,7 @@ git add --ignore-errors -- src/test/java/com/wy/TestGit.java
 3、将刚才添加的文件移除暂存区
 git rm --cached -f -- src/test/java/com/wy/TestGit.java
 
+4、删除文件
+git rm --ignore-unmatch -- src/test/java/com/wy/TestGit.java
+
 
