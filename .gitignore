@@ -1,0 +1,14 @@
+/.settings
+target/
+/target
+/target/*
+/project
+/.jupiter
+/.classpath
+/.idea
+/src/main/main.iml
+*.class
+/coach_cds.iml
+/bin
+/.project
+/sh.exe.stackdump
