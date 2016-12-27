@@ -10,4 +10,13 @@ git rm --cached -f -- src/test/java/com/wy/TestGit.java
 4、删除文件
 git rm --ignore-unmatch -- src/test/java/com/wy/TestGit.java
 
+5、commit文件
+git -c core.quotepath=false commit --only -F C:\Users\wangyang15\AppData\Local\Temp\git-commit-msg-.txt -- src/test/java/com/wy/TestGit.java "git command"
+
+6、push文件到branch
+git -c core.quotepath=false push --progress --porcelain origin refs/heads/master:master
+
+7、撤销修改
+git checkout -- src/test/java/com/wy/Test.java
+
 
