@@ -1,6 +1,7 @@
-package com.wy.example.bio;
+package com.wy.example.paio;/**
+ * Created by wangyang15 on 2016/12/28.
+ */
 
-import com.wy.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,32 +10,26 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * BIO服务端演示代码
+ * 伪异步IO服务端演示代码
  *
  * @author Jacky
  * @version 1.0
- * @create 2016-12-28  11:13
+ * @create 2016-12-28  13:07
  **/
 public class TimeServer {
-    private static final Logger logger = LoggerFactory.getLogger(TimeServer.class);
+    private static Logger logger = LoggerFactory.getLogger(TimeServer.class);
 
     public static void main(String args[]) throws IOException {
         int port = 8080;
-        if (args != null && args.length > 0) {
-            try {
-                port = Integer.valueOf(args[0]);
-            } catch (NumberFormatException e) {
-                logger.error("format port error");
-            }
-        }
         ServerSocket server = null;
         try {
             server = new ServerSocket(port);
             logger.info("The time server is start in port:" + port);
             Socket socket = null;
+            TimeServerHandlerExecutePool singleExecutor = new TimeServerHandlerExecutePool(50, 10000);//创建IO任务线程池
             while (true) {
-                socket = server.accept();//等待客户端连接8080端口
-                new Thread(new TimeServerHandler(socket)).start();//启动线程处理客户端消息，一个客户端连接就要创建一个线程
+                socket = server.accept();
+                singleExecutor.execute(new TimeServerHandler(socket));
             }
         } finally {
             if (server != null) {
