@@ -74,7 +74,7 @@ public class TimeClientHandle implements Runnable {
                         handleInput(key);
                     } catch (Exception e) {
                         if (key != null) {
-                            key.channel();
+                            key.cancel();
                             if (key.channel() != null) {
                                 key.channel().close();
                             }
@@ -135,31 +135,30 @@ public class TimeClientHandle implements Runnable {
                 } else {
                     System.exit(1);//连接失败，进程退出
                 }
-                /**
-                 * 客户端是如何读取时间服务器应答消息的
-                 * 如果客户端接受了服务端的应答消息，则SocketChannel是可读的，由于无法事先判断应答流的大小，我们就预先分配1MB的接受缓冲区用于读取应答消息，调用SocketChannel的read()方法
-                 * 进行异步读取操作。
-                 * 如果读取到消息，则对消息进行解码，最后打印结果。执行完成后将stop置为true,线程退出循环。
-                 */
-                if (key.isReadable()) {
-                    ByteBuffer readBuffer = ByteBuffer.allocate(1024);
-                    int readBytes = socketChannel.read(readBuffer);
-                    if (readBytes > 0) {
-                        readBuffer.flip();
-                        byte[] bytes = new byte[readBuffer.remaining()];
-                        readBuffer.get(bytes);
-                        String body = new String(bytes, "UTF-8");
-                        logger.info("NOW is:" + body);
-                        this.stop = true;
-                    } else if (readBytes < 0) {
-                        //对端链路关闭
-                        key.cancel();
-                        sc.close();
-                    } else {
-                        //读到0字节，忽略
-                    }
+            }
+            /**
+             * 客户端是如何读取时间服务器应答消息的
+             * 如果客户端接受了服务端的应答消息，则SocketChannel是可读的，由于无法事先判断应答流的大小，我们就预先分配1MB的接受缓冲区用于读取应答消息，调用SocketChannel的read()方法
+             * 进行异步读取操作。
+             * 如果读取到消息，则对消息进行解码，最后打印结果。执行完成后将stop置为true,线程退出循环。
+             */
+            if (key.isReadable()) {
+                ByteBuffer readBuffer = ByteBuffer.allocate(1024);
+                int readBytes = socketChannel.read(readBuffer);
+                if (readBytes > 0) {
+                    readBuffer.flip();
+                    byte[] bytes = new byte[readBuffer.remaining()];
+                    readBuffer.get(bytes);
+                    String body = new String(bytes, "UTF-8");
+                    logger.info("NOW is:" + body);
+                    this.stop = true;
+                } else if (readBytes < 0) {
+                    //对端链路关闭
+                    key.cancel();
+                    sc.close();
+                } else {
+                    //读到0字节，忽略
                 }
-
             }
         }
 
@@ -178,7 +177,7 @@ public class TimeClientHandle implements Runnable {
         writeBuffer.put(req);
         writeBuffer.flip();
         sc.write(writeBuffer);
-        if (writeBuffer.hasRemaining()) {
+        if (!writeBuffer.hasRemaining()) {
             logger.info("Send order to server succeed");
         }
     }

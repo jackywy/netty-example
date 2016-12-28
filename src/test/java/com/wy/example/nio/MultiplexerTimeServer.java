@@ -74,7 +74,7 @@ public class MultiplexerTimeServer implements Runnable {
                         handleInput(key);
                     } catch (Exception e) {
                         if (key != null) {
-                            key.channel();
+                            key.cancel();
                             if (key.channel() != null) {
                                 key.channel().close();
                             }
@@ -110,7 +110,7 @@ public class MultiplexerTimeServer implements Runnable {
                 SocketChannel sc = ssc.accept();
                 sc.configureBlocking(false);
                 //Add the new connection to the selector
-                sc.register(selector, SelectionKey.OP_ACCEPT);
+                sc.register(selector, SelectionKey.OP_READ);
             }
             /**
              * 用于读取客户端的请求消息。
