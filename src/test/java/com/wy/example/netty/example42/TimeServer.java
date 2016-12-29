@@ -1,4 +1,4 @@
-package com.wy.example.netty.example1;
+package com.wy.example.netty.example42;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -10,7 +10,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 
 /**
- * Netty时间服务器服务端
+ * 未考虑TCP沾包导致功能异常案例
  *
  * @author Jacky
  * @version 1.0

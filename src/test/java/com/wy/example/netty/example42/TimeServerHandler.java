@@ -1,4 +1,4 @@
-package com.wy.example.netty.example1;
+package com.wy.example.netty.example42;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Date;
 
 /**
+ * 未考虑TCP沾包导致功能异常案例
+ *
  * @author Jacky
  * @version 1.0
  * @create 2016-12-29  14:27
@@ -17,27 +19,21 @@ import java.util.Date;
 public class TimeServerHandler extends ChannelHandlerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(TimeServerHandler.class);
 
+    private int counter;
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf buf = (ByteBuf) msg;
         byte[] req = new byte[buf.readableBytes()];
         buf.readBytes(req);
-        String body = new String(req, "UTF-8");
-        logger.info("The time server receive order:" + body);
+        String body = new String(req, "UTF-8").substring(0, req.length - System.getProperty("line.separator").length());
+        logger.info("The time server receive order:" + body + "; the counter is : " + ++counter);
         String currentTime = "QUERY TIME ORDER".equalsIgnoreCase(body) ? new Date(System.currentTimeMillis()).toString() : "BAD ORDER";
+        currentTime = currentTime + System.getProperty("line.separator");
         ByteBuf resp = Unpooled.copiedBuffer(currentTime.getBytes());
-        ctx.write(resp);
+        ctx.writeAndFlush(resp);
     }
 
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        //将队列中的消息写入到SocketChannel中发送给对方
-        /**
-         * 从性能角度考虑，为了防止频繁地唤醒Selector进行消息发送，Netty的write方法并不直接将消息写入SocketChannel中，
-         * 调用write方法只是把待发送的消息放到缓冲数组中，再通过调用flush方法，将发送缓冲区中的消息全部写到SocketChannel中。
-         */
-        ctx.flush();
-    }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {

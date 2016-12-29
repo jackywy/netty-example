@@ -1,4 +1,4 @@
-package com.wy.example.netty.example1;
+package com.wy.example.netty.example42;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -8,23 +8,29 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 未考虑TCP沾包导致功能异常案例
+ *
  * @author Jacky
  * @version 1.0
  * @create 2016-12-29  14:59
  **/
 public class TimeClientHandler extends ChannelHandlerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(TimeClientHandler.class);
-    private final ByteBuf firstMessage;
+    private int counter;
+    private byte[] req;
 
     public TimeClientHandler() {
-        byte[] req = "QUERY TIME ORDER".getBytes();
-        firstMessage = Unpooled.buffer(req.length);
-        firstMessage.writeBytes(req);
+        req = ("QUERY TIME ORDER" + System.getProperty("line.separator")).getBytes();
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ctx.writeAndFlush(firstMessage);
+        ByteBuf message = null;
+        for (int i = 0; i < 100; i++) {
+            message = Unpooled.buffer(req.length);
+            message.writeBytes(req);
+            ctx.writeAndFlush(message);
+        }
     }
 
     @Override
@@ -33,7 +39,7 @@ public class TimeClientHandler extends ChannelHandlerAdapter {
         byte[] req = new byte[buf.readableBytes()];
         buf.readBytes(req);
         String body = new String(req, "UTF-8");
-        logger.info("Now is:" + body);
+        logger.info("Now is:" + body + " ;the counter is : " + ++counter);
     }
 
     @Override
