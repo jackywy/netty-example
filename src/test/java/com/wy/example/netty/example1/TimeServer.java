@@ -24,9 +24,12 @@ public class TimeServer {
 
     public void bind(int port) {
         //配置服务端的NIO线程组
+        //用于服务端接口客户端的连接
         NioEventLoopGroup bossGroup = new NioEventLoopGroup();
+        //用于SocketChannel的网络读写
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
+            //用于启动NIO服务端的辅助启动类，目的是降低服务端的开发复杂度
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).option(ChannelOption.SO_BACKLOG, 1024).childHandler(new ChildChannelHandler());
             //绑定端口，同步等待成功

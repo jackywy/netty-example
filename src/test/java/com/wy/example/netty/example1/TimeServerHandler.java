@@ -31,11 +31,17 @@ public class TimeServerHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        //将队列中的消息写入到SocketChannel中发送给对方
+        /**
+         * 从性能角度考虑，为了防止频繁地唤醒Selector进行消息发送，Netty的write方法并不直接将消息写入SocketChannel中，
+         * 调用write方法只是把待发送的消息放到缓冲数组中，再通过调用flush方法，将发送缓冲区中的消息全部写到SocketChannel中。
+         */
         ctx.flush();
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        //当发生异常，关闭ChannelHandlerContext，释放和ChannelHandlerContext相关联的句柄等资源。
         ctx.close();
     }
 
