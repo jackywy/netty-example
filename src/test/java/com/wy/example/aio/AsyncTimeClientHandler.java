@@ -31,6 +31,7 @@ public class AsyncTimeClientHandler implements CompletionHandler<Void, AsyncTime
         this.host = host;
         this.port = port;
         try {
+            //创建一个新的channel对象
             client = AsynchronousSocketChannel.open();
         } catch (IOException e) {
             e.printStackTrace();
@@ -39,7 +40,9 @@ public class AsyncTimeClientHandler implements CompletionHandler<Void, AsyncTime
 
     @Override
     public void run() {
+        //创建CountDownLatch进行等待，防止异步操作没有执行完成线程就退出
         latch = new CountDownLatch(1);
+        //通过connect方法发起异步操作
         client.connect(new InetSocketAddress(host, port), this, this);
         try {
             latch.await();
@@ -55,16 +58,21 @@ public class AsyncTimeClientHandler implements CompletionHandler<Void, AsyncTime
 
     @Override
     public void completed(Void result, AsyncTimeClientHandler attachment) {
+        //创建请求消息体，对其编码
         byte[] req = "QUERY TIME ORDER".getBytes();
         ByteBuffer writeBuffer = ByteBuffer.allocate(req.length);
+//        复制到发送缓冲区
         writeBuffer.put(req);
         writeBuffer.flip();
+//进行异步写
         client.write(writeBuffer, writeBuffer, new CompletionHandler<Integer, ByteBuffer>() {
             @Override
             public void completed(Integer result, ByteBuffer buffer) {
+                //如果发送缓冲区中有尚未发送的字节，将继续异步发送
                 if (buffer.hasRemaining()) {
                     client.write(buffer, buffer, this);
                 } else {
+                    //如果已经发送成功，则执行异步读取操作
                     ByteBuffer readBuffer = ByteBuffer.allocate(1024);
                     client.read(readBuffer, readBuffer, new CompletionHandler<Integer, ByteBuffer>() {
                         @Override

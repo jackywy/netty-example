@@ -23,7 +23,9 @@ public class AsyncTimeServerHandler implements Runnable {
     public AsyncTimeServerHandler(int port) {
         this.port = port;
         try {
+            //创建一个异步的服务端通道
             asynchronousServerSocketChannel = AsynchronousServerSocketChannel.open();
+            //绑定监听端口
             asynchronousServerSocketChannel.bind(new InetSocketAddress(port));
             logger.info("The time server is start in port:" + port);
         } catch (IOException e) {
@@ -33,8 +35,10 @@ public class AsyncTimeServerHandler implements Runnable {
 
     @Override
     public void run() {
-         latch = new CountDownLatch(1);
-         doAccept();
+        //完成当前的一组操作之前，允许当前的线程一直阻塞
+        //让线程在此阻塞，防止服务端执行完成退出
+        latch = new CountDownLatch(1);
+        doAccept();
         try {
             latch.await();
         } catch (InterruptedException e) {
@@ -43,6 +47,6 @@ public class AsyncTimeServerHandler implements Runnable {
     }
 
     private void doAccept() {
-        asynchronousServerSocketChannel.accept(this,new AcceptCompletionHandler());
+        asynchronousServerSocketChannel.accept(this, new AcceptCompletionHandler());
     }
 }

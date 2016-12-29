@@ -29,6 +29,7 @@ public class ReadCompletionHandler implements CompletionHandler<Integer, ByteBuf
 
     @Override
     public void completed(Integer result, ByteBuffer attachment) {
+        //flip操作，为后续从缓冲区读取数据做准备
         attachment.flip();
         byte[] body = new byte[attachment.remaining()];
         attachment.get(body);
@@ -44,8 +45,10 @@ public class ReadCompletionHandler implements CompletionHandler<Integer, ByteBuf
 
     private void doWrite(String currentTime) {
         if (currentTime!=null && currentTime.trim().length()>0){
+            //调用字符串的解码方法将应答消息编码成字节数组
             byte[] bytes = currentTime.getBytes();
             ByteBuffer writeBuffer = ByteBuffer.allocate(bytes.length);
+//            复制到发送缓冲区
             writeBuffer.put(bytes);
             writeBuffer.flip();
             channel.write(writeBuffer, writeBuffer, new CompletionHandler<Integer, ByteBuffer>() {
@@ -60,6 +63,7 @@ public class ReadCompletionHandler implements CompletionHandler<Integer, ByteBuf
                 @Override
                 public void failed(Throwable exc, ByteBuffer attachment) {
                     try {
+                        //关闭链路，释放资源
                         channel.close();
                     } catch (IOException e) {
                         //ignore on close
