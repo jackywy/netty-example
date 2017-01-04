@@ -20,13 +20,9 @@ import io.netty.handler.logging.LoggingHandler;
  * @create 2016-12-29  19:03
  **/
 public class EchoServer {
-    private final int port;
 
-    public EchoServer(int port) {
-        this.port = port;
-    }
 
-    public void run() throws Exception {
+    public void bind(int port) throws Exception {
         //配置服务端的NIO线程组
         NioEventLoopGroup acceptorGroup = new NioEventLoopGroup();
         NioEventLoopGroup IOGroup = new NioEventLoopGroup();
@@ -43,7 +39,7 @@ public class EchoServer {
                     ch.pipeline().addLast("msgpack decoder", new MsgpackDecoder());
                     ch.pipeline().addLast("frameEncoder", new LengthFieldPrepender(2));
                     ch.pipeline().addLast("msgpack encoder", new MsgpackEncoder());
-                    ch.pipeline().addLast(new EchoServerHandler(100));
+                    ch.pipeline().addLast(new EchoServerHandler(10));
                 }
             });
             //绑定端口，同步等待成功
@@ -57,6 +53,6 @@ public class EchoServer {
     }
 
     public static void main(String[] args) throws Exception {
-        new EchoServer(8080).run();
+        new EchoServer().bind(8080);
     }
 }

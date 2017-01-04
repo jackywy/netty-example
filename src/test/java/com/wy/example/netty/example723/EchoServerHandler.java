@@ -1,6 +1,7 @@
 package com.wy.example.netty.example723;
 
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
  * @version 1.0
  * @create 2016-12-30  16:34
  **/
+@ChannelHandler.Sharable
 public class EchoServerHandler extends ChannelHandlerAdapter {
     public static final Logger logger = LoggerFactory.getLogger(EchoServerHandler.class);
 
@@ -23,6 +25,7 @@ public class EchoServerHandler extends ChannelHandlerAdapter {
         this.sendNumber = sendNumber;
     }
 
+
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         UserInfo[] infos = getUserInfos();
@@ -32,9 +35,8 @@ public class EchoServerHandler extends ChannelHandlerAdapter {
         ctx.flush();
     }
 
-
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         logger.info("Server receive the msgpack message: " + msg);
         ctx.write(msg);
     }
@@ -55,4 +57,6 @@ public class EchoServerHandler extends ChannelHandlerAdapter {
         }
         return userInfos;
     }
+
+
 }
