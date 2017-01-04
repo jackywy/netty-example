@@ -29,7 +29,7 @@ public class SubReqClient {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(MarshallingCodeCFactory.buildMarshallingDecoder());
                             ch.pipeline().addLast(MarshallingCodeCFactory.buildMarshallingEncoder());
-//                            ch.pipeline().addLast(new SubReqClientHanlder());
+                            ch.pipeline().addLast(new SubReqClientHandler());
                         }
                     });
             //发起异步连接操作
