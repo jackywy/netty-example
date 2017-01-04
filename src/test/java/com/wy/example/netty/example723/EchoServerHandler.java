@@ -1,8 +1,6 @@
 package com.wy.example.netty.example723;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandler;
+
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
@@ -13,25 +11,48 @@ import org.slf4j.LoggerFactory;
  *
  * @author Jacky
  * @version 1.0
- * @create 2016-12-29  19:13
+ * @create 2016-12-30  16:34
  **/
-@ChannelHandler.Sharable
 public class EchoServerHandler extends ChannelHandlerAdapter {
     public static final Logger logger = LoggerFactory.getLogger(EchoServerHandler.class);
-    int counter = 0;
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        String body = (String) msg;
-        logger.info("This is " + ++counter + " times receive client:  [" + body + "]");
-        body += "$_";
-        ByteBuf echo = Unpooled.copiedBuffer(body.getBytes());
-        ctx.writeAndFlush(echo);
+
+    private final int sendNumber;
+
+    public EchoServerHandler(int sendNumber) {
+        this.sendNumber = sendNumber;
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        cause.printStackTrace();
-        ctx.close();//发生异常，关闭链路
+    public void channelActive(ChannelHandlerContext ctx) {
+        UserInfo[] infos = getUserInfos();
+        for (UserInfo infoE : infos) {
+            ctx.write(infoE);
+        }
+        ctx.flush();
+    }
+
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        logger.info("Server receive the msgpack message: " + msg);
+        ctx.write(msg);
+    }
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) {
+        ctx.flush();
+    }
+
+    private UserInfo[] getUserInfos() {
+        UserInfo[] userInfos = new UserInfo[sendNumber];
+        UserInfo userInfo = null;
+        for (int i = 0; i < sendNumber; i++) {
+            userInfo = new UserInfo();
+            userInfo.setAge(i);
+            userInfo.setUserName("ABCDEFG --->" + i);
+            userInfos[i] = userInfo;
+        }
+        return userInfos;
     }
 }
