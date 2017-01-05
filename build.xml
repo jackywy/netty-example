@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================
+
+Ant build file for JiBX data binding code to schema starter example.
+
+=================================================================== -->
+<project basedir="." default="bindgen">
+    <path id="classpath">
+        <fileset dir="C:/Users/wangyang15/IdeaProjects/netty-example/lib/" includes="*.jar"/>
+    </path>
+    <!-- generate default binding and schema -->
+    <target name="bindgen">
+        <echo message="Running BindGen tool"/>
+        <java classpathref="classpath" fork="true" failonerror="true" classname="org.jibx.binding.generator.BindGen">
+            <arg value="-s"/>
+            <arg value="${basedir}/src/test/java/com/wy/example/netty/example_http_xml_103/pojo"/>
+            <arg value="com.wy.example.netty.example_http_xml_103.pojo.Order"/>
+        </java>
+    </target>
+</project>
