@@ -98,5 +98,17 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
                         + new java.util.Date().toString()));
     }
 
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        ctx.flush();
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+            throws Exception {
+        cause.printStackTrace();
+        ctx.close();
+    }
+
 
 }
