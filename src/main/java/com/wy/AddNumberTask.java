@@ -1,9 +1,9 @@
-package com.wy.cachedthreadpool;
+package com.wy;
 
 import java.util.concurrent.Callable;
 
 /**
- * Created by wangyang on 2017/1/19.
+ * 计算数据累加
  */
 
 public class AddNumberTask implements Callable<Long> {

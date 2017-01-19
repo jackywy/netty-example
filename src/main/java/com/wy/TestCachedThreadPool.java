@@ -1,4 +1,4 @@
-package com.wy.cachedthreadpool;
+package com.wy;
 
 import java.util.ArrayList;
 import java.util.concurrent.*;
