@@ -1,10 +1,8 @@
 package com.wy.gps.distance.helper;
 
-import com.wy.Position;
-import com.wy.gps.distance.DistanceCounterTask;
 import com.wy.gps.distance.domain.DMS;
 import com.wy.gps.distance.domain.PositionDMS;
-import org.springframework.util.CollectionUtils;
+import com.wy.gps.distance.domain.RecommendPositionDMS;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -40,7 +38,8 @@ public class PositionUtils {
         return new DMS(ddd.intValue(), minute.intValue(), second.doubleValue());
     }
 
-    /**l
+    /**
+     * l
      * 度分秒(DMS)转换成度(DDD)
      *
      * @param dms
@@ -60,20 +59,20 @@ public class PositionUtils {
      * @param positionDMSList
      * @return
      */
-    public static Map<PositionDMS,Integer> getFilterDMSPositionList(Set<PositionDMS> positionDMSList) throws InterruptedException, ExecutionException {
+    public static Map<RecommendPositionDMS, Integer> getFilterDMSPositionMap(Set<PositionDMS> positionDMSList) throws InterruptedException, ExecutionException {
         //创建线程池
         ExecutorService executor = new ThreadPoolExecutor(processorNumber, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
-        ArrayList<Future<Map<PositionDMS,Integer>>> resultList = new ArrayList<Future<Map<PositionDMS,Integer>>>();
+        ArrayList<Future<Map<RecommendPositionDMS, Integer>>> resultList = new ArrayList<Future<Map<RecommendPositionDMS, Integer>>>();
         //获得计算开始时间
         long startTime = System.currentTimeMillis();
         System.out.println("positionDMSList size:" + positionDMSList.size());
         //创建并提交任务
         FilterPositionTask task = new FilterPositionTask(positionDMSList);
-        Future<Map<PositionDMS,Integer>> future = executor.submit(task);
+        Future<Map<RecommendPositionDMS, Integer>> future = executor.submit(task);
         resultList.add(future);
         executor.shutdown();
-        Map<PositionDMS,Integer> filterPositionDMSMap = new HashMap<PositionDMS,Integer>();
-        for (Future<Map<PositionDMS,Integer>> loopFuture : resultList) {
+        Map<RecommendPositionDMS, Integer> filterPositionDMSMap = new HashMap<RecommendPositionDMS, Integer>();
+        for (Future<Map<RecommendPositionDMS, Integer>> loopFuture : resultList) {
             while (true) {
                 if (loopFuture.isDone() && !loopFuture.isCancelled()) {
                     filterPositionDMSMap = loopFuture.get();
@@ -83,7 +82,7 @@ public class PositionUtils {
         }
         long endTime = System.currentTimeMillis();
         System.out.println("耗时：" + (endTime - startTime) + "毫秒");
-        System.out.println("filterPositionDMSList size:" + filterPositionDMSMap.size());
+        System.out.println("filterPositionDMSMap size:" + filterPositionDMSMap.size());
         return filterPositionDMSMap;
     }
 
@@ -115,14 +114,14 @@ public class PositionUtils {
         //获取过滤的位置列表
         System.out.println("---开始准备数据---");
         Set<PositionDMS> positionDMSList = new HashSet<PositionDMS>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 2600; i++) {
             Random random = new Random();
             Double randomLat = random.nextInt(89) + Double.valueOf(random.nextDouble());
+//            positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(36.719823)));
             positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(randomLat)));
         }
         System.out.println("---结束准备数据---");
-        Map<PositionDMS,Integer> filterDMSPositionMap = getFilterDMSPositionList(positionDMSList);
+        Map<RecommendPositionDMS, Integer> filterDMSPositionMap = getFilterDMSPositionMap(positionDMSList);
         System.out.println("获得过滤后的一组相似列表长度为:" + filterDMSPositionMap.size());
-
     }
 }

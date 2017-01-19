@@ -6,9 +6,9 @@ import java.io.Serializable;
  * 度分秒经纬度
  */
 public class DMS implements Serializable {
-    private int degrees;//度
-    private int minutes;//分
-    private double seconds;//秒
+    private Integer degrees;//度
+    private Integer minutes;//分
+    private Double seconds;//秒
 
     /**
      * 构造函数
@@ -17,33 +17,33 @@ public class DMS implements Serializable {
      * @param minutes
      * @param seconds
      */
-    public DMS(int degrees, int minutes, double seconds) {
+    public DMS(Integer degrees, Integer minutes, double seconds) {
         this.degrees = degrees;
         this.minutes = minutes;
         this.seconds = seconds;
     }
 
-    public int getDegrees() {
+    public Integer getDegrees() {
         return degrees;
     }
 
-    public void setDegrees(int degrees) {
+    public void setDegrees(Integer degrees) {
         this.degrees = degrees;
     }
 
-    public int getMinutes() {
+    public Integer getMinutes() {
         return minutes;
     }
 
-    public void setMinutes(int minutes) {
+    public void setMinutes(Integer minutes) {
         this.minutes = minutes;
     }
 
-    public double getSeconds() {
+    public Double getSeconds() {
         return seconds;
     }
 
-    public void setSeconds(double seconds) {
+    public void setSeconds(Double seconds) {
         this.seconds = seconds;
     }
 
@@ -54,19 +54,16 @@ public class DMS implements Serializable {
 
         DMS dms = (DMS) o;
 
-        if (degrees != dms.degrees) return false;
-        if (minutes != dms.minutes) return false;
-        return Double.compare(dms.seconds, seconds) == 0;
+        if (degrees != null ? !degrees.equals(dms.degrees) : dms.degrees != null) return false;
+        if (minutes != null ? !minutes.equals(dms.minutes) : dms.minutes != null) return false;
+        return seconds != null ? seconds.equals(dms.seconds) : dms.seconds == null;
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = degrees;
-        result = 31 * result + minutes;
-        temp = Double.doubleToLongBits(seconds);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        int result = degrees != null ? degrees.hashCode() : 0;
+        result = 31 * result + (minutes != null ? minutes.hashCode() : 0);
+        result = 31 * result + (seconds != null ? seconds.hashCode() : 0);
         return result;
     }
 
