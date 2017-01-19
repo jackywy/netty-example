@@ -1,10 +1,8 @@
-package com.wy.cachedthreadpool.distance;
+package com.wy.cachedthreadpool.gps.distance;
 
 import com.wy.Position;
-import com.wy.cachedthreadpool.AddNumberTask;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
