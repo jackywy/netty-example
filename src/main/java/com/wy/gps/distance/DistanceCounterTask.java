@@ -1,4 +1,4 @@
-package com.wy.cachedthreadpool.gps.distance;
+package com.wy.gps.distance;
 
 import com.wy.Position;
 
