@@ -28,8 +28,12 @@ public class Distance {
         Distance.getDistance(117.4, 36.9, 117.5, 36.8);
         Distance.getDistance(117.6, 36.9, 117.5, 36.8);
 
-        //维度相差10分--大概相差18千米
-        Distance.getDistance(117.539905, 36.719823, 117.539905, 36.88649);
+        //维度相差50秒--大概相差1千米
+        Distance.getDistance(117.539905, 36.719823, 117.539905, 36.733712);
+        //经度相差50秒--大概相差1千米
+        Distance.getDistance(117.539905, 36.719823, 117.553794, 36.719823);
+        //经纬度各差50秒--大概相差1千米
+        Distance.getDistance(117.539905, 36.719823, 117.553794, 36.733712);
     }
 
     public static double getDistance(double lng1, double lat1, double lng2, double lat2) {
@@ -41,8 +45,8 @@ public class Distance {
         double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
                 Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
         s = s * EARTH_RADIUS;
-        s = Math.round(s * 10000) / 10000;
-        System.out.println("计算得到两个经纬度之间的距离为:" + s + "千米");
+        s = Math.round(s * 10000) / 10;
+        System.out.println("计算得到两个经纬度之间的距离为:" + s + "米");
         return s;
     }
 

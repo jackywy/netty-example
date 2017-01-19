@@ -5,10 +5,10 @@ import java.io.Serializable;
 /**
  * 度分秒经纬度
  */
-public class DmsPosition implements Serializable {
+public class DMS implements Serializable {
     private int degrees;//度
     private int minutes;//分
-    private int seconds;//秒
+    private double seconds;//秒
 
     /**
      * 构造函数
@@ -17,7 +17,7 @@ public class DmsPosition implements Serializable {
      * @param minutes
      * @param seconds
      */
-    public DmsPosition(int degrees, int minutes, int seconds) {
+    public DMS(int degrees, int minutes, double seconds) {
         this.degrees = degrees;
         this.minutes = minutes;
         this.seconds = seconds;
@@ -39,11 +39,11 @@ public class DmsPosition implements Serializable {
         this.minutes = minutes;
     }
 
-    public int getSeconds() {
+    public double getSeconds() {
         return seconds;
     }
 
-    public void setSeconds(int seconds) {
+    public void setSeconds(double seconds) {
         this.seconds = seconds;
     }
 
@@ -52,24 +52,27 @@ public class DmsPosition implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DmsPosition that = (DmsPosition) o;
+        DMS dms = (DMS) o;
 
-        if (degrees != that.degrees) return false;
-        if (minutes != that.minutes) return false;
-        return seconds == that.seconds;
+        if (degrees != dms.degrees) return false;
+        if (minutes != dms.minutes) return false;
+        return Double.compare(dms.seconds, seconds) == 0;
     }
 
     @Override
     public int hashCode() {
-        int result = degrees;
+        int result;
+        long temp;
+        result = degrees;
         result = 31 * result + minutes;
-        result = 31 * result + seconds;
+        temp = Double.doubleToLongBits(seconds);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 
     @Override
     public String toString() {
-        return "DmsPosition{" +
+        return "DMS{" +
                 "degrees=" + degrees +
                 ", minutes=" + minutes +
                 ", seconds=" + seconds +
