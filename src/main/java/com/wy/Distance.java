@@ -16,17 +16,20 @@ public class Distance {
     }
 
     public static void main(String args[]) {
-        //经度相差0.1度
+        //经度相差0.1度--大概相差8千米
         Distance.getDistance(117.4, 36.8, 117.5, 36.8);
         Distance.getDistance(117.6, 36.8, 117.5, 36.8);
-        //维度相差0.1度
+        //维度相差0.1度--大概相差11千米
         Distance.getDistance(117.5, 36.7, 117.5, 36.8);
         Distance.getDistance(117.5, 36.9, 117.5, 36.8);
-        //经纬度各差0.1度
+        //经纬度各差0.1度--大概相差14千米
         Distance.getDistance(117.4, 36.7, 117.5, 36.8);
         Distance.getDistance(117.6, 36.7, 117.5, 36.8);
         Distance.getDistance(117.4, 36.9, 117.5, 36.8);
         Distance.getDistance(117.6, 36.9, 117.5, 36.8);
+
+        //维度相差10分--大概相差18千米
+        Distance.getDistance(117.539905, 36.719823, 117.539905, 36.88649);
     }
 
     public static double getDistance(double lng1, double lat1, double lng2, double lat2) {
