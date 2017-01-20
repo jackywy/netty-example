@@ -6,17 +6,19 @@ import java.io.Serializable;
  * 度分秒经纬度
  */
 public class RecommendDMS implements Serializable {
-    private Integer degrees;//度
+    private Integer degrees;
     private Integer minMinutes;
     private Integer maxMinutes;
+    private Integer minutes;
 
     public RecommendDMS() {
     }
 
-    public RecommendDMS(Integer degrees, Integer minMinutes, Integer maxMinutes) {
+    public RecommendDMS(Integer degrees, Integer minMinutes, Integer maxMinutes, Integer minutes) {
         this.degrees = degrees;
         this.minMinutes = minMinutes;
         this.maxMinutes = maxMinutes;
+        this.minutes = minutes;
     }
 
     public Integer getDegrees() {
@@ -43,33 +45,12 @@ public class RecommendDMS implements Serializable {
         this.maxMinutes = maxMinutes;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        RecommendDMS that = (RecommendDMS) o;
-
-        if (degrees != null ? !degrees.equals(that.degrees) : that.degrees != null) return false;
-        if (minMinutes != null ? !minMinutes.equals(that.minMinutes) : that.minMinutes != null) return false;
-        return maxMinutes != null ? maxMinutes.equals(that.maxMinutes) : that.maxMinutes == null;
+    public Integer getMinutes() {
+        return minutes;
     }
 
-    @Override
-    public int hashCode() {
-        int result = degrees != null ? degrees.hashCode() : 0;
-        result = 31 * result + (minMinutes != null ? minMinutes.hashCode() : 0);
-        result = 31 * result + (maxMinutes != null ? maxMinutes.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "RecommendDMS{" +
-                "degrees=" + degrees +
-                ", minMinutes=" + minMinutes +
-                ", maxMinutes=" + maxMinutes +
-                '}';
+    public void setMinutes(Integer minutes) {
+        this.minutes = minutes;
     }
 
     public static RecommendDMS convertRecommendDMS(DMS dms, int interval) {
@@ -81,6 +62,17 @@ public class RecommendDMS implements Serializable {
                 recommendDMS.setMaxMinutes(dms.getMinutes() + interval);
             }
         }
+        recommendDMS.setMinutes(dms.getMinutes());
         return recommendDMS;
+    }
+
+    @Override
+    public String toString() {
+        return "RecommendDMS{" +
+                "degrees=" + degrees +
+                ", minMinutes=" + minMinutes +
+                ", maxMinutes=" + maxMinutes +
+                ", minutes=" + minutes +
+                '}';
     }
 }

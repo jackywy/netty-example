@@ -37,15 +37,28 @@ public class RecommendPositionDMS {
         if (o == null || getClass() != o.getClass()) return false;
 
         RecommendPositionDMS that = (RecommendPositionDMS) o;
+        if (lng != null && lat != null && that.lng != null && that.lat != null) {
+            //两个位置经度和纬度的度不一样，则判断位置不相等
+            if (!lng.getDegrees().equals(that.lng.getDegrees()) || !lat.getDegrees().equals(that.lat.getDegrees())) {
+                return false;
+            } else {
+                //后一个位置的经度和纬度的分任何一个不落在前一个位置分的范围，则判定不为一组
+                if ((that.lng.getMinutes() < lng.getMinMinutes() || that.lng.getMinutes() > lng.getMaxMinutes()) || (that.lat.getMinutes() < lat.getMinMinutes() || that.lat.getMinutes() > lat.getMaxMinutes())) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
 
-        if (lng != null ? !lng.equals(that.lng) : that.lng != null) return false;
-        return lat != null ? lat.equals(that.lat) : that.lat == null;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public int hashCode() {
-        int result = lng != null ? lng.hashCode() : 0;
-        result = 31 * result + (lat != null ? lat.hashCode() : 0);
+        int result = lng != null ? lng.getDegrees().hashCode() : 0;
+        result = 31 * result + (lat != null ? lat.getDegrees().hashCode() : 0);
         return result;
     }
 
@@ -61,6 +74,7 @@ public class RecommendPositionDMS {
         }
         return recommendPositionDMS;
     }
+
 
     @Override
     public String toString() {

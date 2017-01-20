@@ -108,20 +108,20 @@ public class PositionUtils {
         System.out.println(PositionUtils.covertDDDToDMS(latDDD2));
 
         //度分秒转换度
-        System.out.println(PositionUtils.covertDMSToDDD(new DMS(36, 43, 61.3628)));
-        System.out.println(PositionUtils.covertDMSToDDD(new DMS(117, 32, 73.658)));
+        System.out.println(PositionUtils.covertDMSToDDD(new DMS(117, 32, 23.658)));
+        System.out.println(PositionUtils.covertDMSToDDD(new DMS(36, 43, 21.3628)));
 
         //获取过滤的位置列表
         System.out.println("---开始准备数据---");
         Set<PositionDMS> positionDMSList = new HashSet<PositionDMS>();
-/*        for (int i = 0; i < 2600; i++) {
+        for (int i = 0; i < 260*1000; i++) {
             Random random = new Random();
             Double randomLat = random.nextInt(89) + Double.valueOf(random.nextDouble());
 //            positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(36.719823)));
             positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(randomLat)));
-        }*/
-        positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(36.719823)));
-        positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(36.819823)));
+        }
+//        positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(36.719823)));
+//        positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(36.619823)));
         System.out.println("---结束准备数据---");
         Map<RecommendPositionDMS, Integer> filterDMSPositionMap = getFilterDMSPositionMap(positionDMSList);
         System.out.println("获得过滤后的一组相似列表长度为:" + filterDMSPositionMap.size());
