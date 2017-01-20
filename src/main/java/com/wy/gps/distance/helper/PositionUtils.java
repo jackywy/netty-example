@@ -114,12 +114,14 @@ public class PositionUtils {
         //获取过滤的位置列表
         System.out.println("---开始准备数据---");
         Set<PositionDMS> positionDMSList = new HashSet<PositionDMS>();
-        for (int i = 0; i < 2600; i++) {
+/*        for (int i = 0; i < 2600; i++) {
             Random random = new Random();
             Double randomLat = random.nextInt(89) + Double.valueOf(random.nextDouble());
 //            positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(36.719823)));
             positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(randomLat)));
-        }
+        }*/
+        positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(36.719823)));
+        positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(36.819823)));
         System.out.println("---结束准备数据---");
         Map<RecommendPositionDMS, Integer> filterDMSPositionMap = getFilterDMSPositionMap(positionDMSList);
         System.out.println("获得过滤后的一组相似列表长度为:" + filterDMSPositionMap.size());

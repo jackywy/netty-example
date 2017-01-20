@@ -10,6 +10,9 @@ public class RecommendDMS implements Serializable {
     private Integer minMinutes;
     private Integer maxMinutes;
 
+    public RecommendDMS() {
+    }
+
     public RecommendDMS(Integer degrees, Integer minMinutes, Integer maxMinutes) {
         this.degrees = degrees;
         this.minMinutes = minMinutes;
@@ -67,5 +70,17 @@ public class RecommendDMS implements Serializable {
                 ", minMinutes=" + minMinutes +
                 ", maxMinutes=" + maxMinutes +
                 '}';
+    }
+
+    public static RecommendDMS convertRecommendDMS(DMS dms, int interval) {
+        RecommendDMS recommendDMS = new RecommendDMS();
+        if (dms != null) {
+            recommendDMS.setDegrees(dms.getDegrees());
+            if (dms.getMinutes() != null) {
+                recommendDMS.setMinMinutes(dms.getMinutes() - interval);
+                recommendDMS.setMaxMinutes(dms.getMinutes() + interval);
+            }
+        }
+        return recommendDMS;
     }
 }

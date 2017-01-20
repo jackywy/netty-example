@@ -7,6 +7,8 @@ public class RecommendPositionDMS {
     private RecommendDMS lng;//经度
     private RecommendDMS lat;//纬度
 
+    public RecommendPositionDMS() {
+    }
 
     public RecommendPositionDMS(RecommendDMS lng, RecommendDMS lat) {
         this.lng = lng;
@@ -48,10 +50,16 @@ public class RecommendPositionDMS {
     }
 
     public static RecommendPositionDMS covertToRecommendPositionDMS(PositionDMS positionDMS, int lngInterval, int latInterval) {
-        if(positionDMS!=null){
-
+        RecommendPositionDMS recommendPositionDMS = new RecommendPositionDMS();
+        if (positionDMS != null) {
+            if (positionDMS.getLng() != null && positionDMS.getLat() != null) {
+                RecommendDMS recommendLng = RecommendDMS.convertRecommendDMS(positionDMS.getLng(), lngInterval);
+                RecommendDMS recommendLat = RecommendDMS.convertRecommendDMS(positionDMS.getLat(), latInterval);
+                recommendPositionDMS.setLng(recommendLng);
+                recommendPositionDMS.setLat(recommendLat);
+            }
         }
-        return null;
+        return recommendPositionDMS;
     }
 
     @Override
