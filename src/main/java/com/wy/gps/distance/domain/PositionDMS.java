@@ -6,10 +6,17 @@ package com.wy.gps.distance.domain;
 public class PositionDMS {
     private DMS lng;//经度
     private DMS lat;//纬度
+    private Long gpsTime;//GPS定位时间
 
     public PositionDMS(DMS lng, DMS lat) {
         this.lng = lng;
         this.lat = lat;
+    }
+
+    public PositionDMS(DMS lng, DMS lat, Long gpsTime) {
+        this.lng = lng;
+        this.lat = lat;
+        this.gpsTime = gpsTime;
     }
 
     public DMS getLng() {
@@ -28,6 +35,14 @@ public class PositionDMS {
         this.lat = lat;
     }
 
+    public Long getGpsTime() {
+        return gpsTime;
+    }
+
+    public void setGpsTime(Long gpsTime) {
+        this.gpsTime = gpsTime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,13 +51,15 @@ public class PositionDMS {
         PositionDMS that = (PositionDMS) o;
 
         if (lng != null ? !lng.equals(that.lng) : that.lng != null) return false;
-        return lat != null ? lat.equals(that.lat) : that.lat == null;
+        if (lat != null ? !lat.equals(that.lat) : that.lat != null) return false;
+        return gpsTime != null ? gpsTime.equals(that.gpsTime) : that.gpsTime == null;
     }
 
     @Override
     public int hashCode() {
         int result = lng != null ? lng.hashCode() : 0;
         result = 31 * result + (lat != null ? lat.hashCode() : 0);
+        result = 31 * result + (gpsTime != null ? gpsTime.hashCode() : 0);
         return result;
     }
 
@@ -51,6 +68,7 @@ public class PositionDMS {
         return "PositionDMS{" +
                 "lng=" + lng +
                 ", lat=" + lat +
+                ", gpsTime=" + gpsTime +
                 '}';
     }
 }

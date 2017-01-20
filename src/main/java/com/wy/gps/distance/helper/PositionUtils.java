@@ -121,13 +121,20 @@ public class PositionUtils {
         System.out.println("---开始准备数据---");
         List<PositionDMS> positionDMSList = new ArrayList<PositionDMS>();
         //测试数据
-//        positionDMSList = PositionsDataUtil.getPositionDMSData();
+        positionDMSList = PositionsDataUtil.getPositionDMSData();
         //随机数据
-        for (int i = 0; i < 260 * 10000; i++) {
+/*        for (int i = 0; i < 260 * 10000; i++) {
             Random random = new Random();
+            Date randomDate = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.SECOND, -random.nextInt(89));
+            randomDate = calendar.getTime();
+
+            //得到带有gps时间的randomDate
             Double randomLat = random.nextInt(89) + Double.valueOf(random.nextDouble());
-            positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(randomLat)));
-        }
+            positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(randomLat), randomDate.getTime()));
+        }*/
 //        positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(36.719823)));
 //        positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(36.619823)));
         System.out.println("---结束准备数据---");
