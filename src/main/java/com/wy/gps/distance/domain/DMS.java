@@ -1,5 +1,7 @@
 package com.wy.gps.distance.domain;
 
+import com.wy.gps.distance.helper.PositionUtils;
+
 import java.io.Serializable;
 
 /**
@@ -69,10 +71,12 @@ public class DMS implements Serializable {
 
     @Override
     public String toString() {
+        Double ddd = PositionUtils.covertDMSToDDD(this);
         return "DMS{" +
                 "degrees=" + degrees +
                 ", minutes=" + minutes +
                 ", seconds=" + seconds +
+                ", ddd=" + ddd +
                 '}';
     }
 }
