@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import static java.math.BigDecimal.ROUND_UP;
 
 public class Test {
-    private static final Logger logger = LoggerFactory.getLogger(Test.class);
+    private static final Logger logger = LoggerFactory.getLogger(com.wy.test.Test.class);
 
     @org.testng.annotations.Test
     public void testFirst() {

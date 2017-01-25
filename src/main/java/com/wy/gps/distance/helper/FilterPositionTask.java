@@ -17,7 +17,7 @@ public class FilterPositionTask implements Callable<Map<RecommendPositionDMS, Re
     //维度相差一分
     private static final int LAT_INTERVAL_VALUE = 1;
     //满足分组位置范围的个数
-    private static final int MIN_SUBSET_COUNT = 1;
+    public static final int MIN_SUBSET_COUNT = 1000;
     private List<PositionDMS> positionDMSList;
 
     public FilterPositionTask(List<PositionDMS> positionDMSList) {

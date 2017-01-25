@@ -1,4 +1,4 @@
-package com.wy;
+package com.wy.test;
 
 public class Sort {
     private static char[] NUM = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',

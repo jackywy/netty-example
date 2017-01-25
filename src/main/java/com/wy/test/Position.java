@@ -1,4 +1,4 @@
-package com.wy;
+package com.wy.test;
 
 /**
  * Created by wangyang on 2017/1/18.

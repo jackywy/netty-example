@@ -1,6 +1,4 @@
-package com.wy.gps.distance;
-
-import com.wy.Position;
+package com.wy.test;
 
 import java.util.ArrayList;
 import java.util.List;

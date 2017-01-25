@@ -86,8 +86,8 @@ public class PositionUtils {
         while (iterator.hasNext()) {
             RecommendPositionDMS recommendPositionDMS = iterator.next();
             RecommendPositionDMSSubset recommendPositionDMSSubset = filterPositionDMSMap.get(recommendPositionDMS);
-            System.out.println(recommendPositionDMS);
-            System.out.println(recommendPositionDMSSubset.getTotalCount());
+            System.out.println("推荐常规位置地点坐标:"+recommendPositionDMS);
+            System.out.println("该坐标被推荐为常规位置地点坐标的数据集个数:"+recommendPositionDMSSubset.getTotalCount());
         }
         return filterPositionDMSMap;
     }
@@ -121,7 +121,7 @@ public class PositionUtils {
         System.out.println("---开始准备数据---");
         List<PositionDMS> positionDMSList = new ArrayList<PositionDMS>();
         //测试数据
-        positionDMSList = PositionsDataUtil.getPositionDMSData();
+        positionDMSList = PositionsDataUtil.getPositionDMSDataFromFile();
         //随机数据
 /*        for (int i = 0; i < 260 * 10000; i++) {
             Random random = new Random();
@@ -138,7 +138,8 @@ public class PositionUtils {
 //        positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(36.719823)));
 //        positionDMSList.add(new PositionDMS(covertDDDToDMS(117.539905), covertDDDToDMS(36.619823)));
         System.out.println("---结束准备数据---");
+        System.out.println("分组子集小于"+FilterPositionTask.MIN_SUBSET_COUNT+"条结果将被过滤");
         Map<RecommendPositionDMS, RecommendPositionDMSSubset> filterDMSPositionMap = getFilterDMSPositionMap(positionDMSList);
-        System.out.println("获得过滤后的一组相似列表长度为:" + filterDMSPositionMap.size());
+        System.out.println("被推荐位置个数为:" + filterDMSPositionMap.size());
     }
 }
